@@ -81,6 +81,7 @@ static void main_window_load(Window *window)
 static void main_window_unload(Window *window)
 {
   text_layer_destroy(s_time_layer);
+  text_layer_destroy(s_display);
   layer_destroy(s_battery_layer);
   text_layer_destroy(s_date_layer);
 }
