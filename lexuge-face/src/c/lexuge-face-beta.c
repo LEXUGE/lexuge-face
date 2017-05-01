@@ -5,6 +5,7 @@ static Window *s_main_window;
 static TextLayer *s_time_layer;
 static TextLayer *s_display;
 static Layer *s_battery_layer;
+static TextLayer *s_date_layer;
 
 static void battery_update_proc(Layer *layer, GContext *ctx)
 {
@@ -30,6 +31,10 @@ static void update_time()
   strftime(s_buffer, sizeof(s_buffer), clock_is_24h_style() ?
                                           "%H:%M" : "%I:%M", tick_time);
   text_layer_set_text(s_time_layer, s_buffer);
+  
+  static char date_buffer[16];
+  strftime(date_buffer, sizeof(date_buffer), "%a %d %b", tick_time);
+  text_layer_set_text(s_date_layer, date_buffer);
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
@@ -57,6 +62,15 @@ static void main_window_load(Window *window)
   text_layer_set_text_alignment(s_display, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
   layer_add_child(window_layer, text_layer_get_layer(s_display));
+  
+  s_date_layer = text_layer_create(
+      GRect(2, 130, 144, 30));
+  text_layer_set_background_color(s_date_layer, GColorVividCerulean);
+  text_layer_set_text_color(s_date_layer, GColorDarkGray);
+  text_layer_set_font(s_date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+  text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
+  layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
+
   update_time();
   
   s_battery_layer = layer_create(GRect(14, 120, 115, 2));
@@ -68,6 +82,7 @@ static void main_window_unload(Window *window)
 {
   text_layer_destroy(s_time_layer);
   layer_destroy(s_battery_layer);
+  text_layer_destroy(s_date_layer);
 }
 static void init()
 {
