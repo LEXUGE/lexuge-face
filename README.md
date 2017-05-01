@@ -1,2 +1,2 @@
 # lexuge-face
-A LEXUGE's watchface
+A LEXUGE's opensource watchface
