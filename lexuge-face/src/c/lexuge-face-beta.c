@@ -32,7 +32,7 @@ static void update_time()
                                           "%H:%M" : "%I:%M", tick_time);
   text_layer_set_text(s_time_layer, s_buffer);
   
-  static char date_buffer[16];
+  static char date_buffer[30];
   strftime(date_buffer, sizeof(date_buffer), "%a %d %b", tick_time);
   text_layer_set_text(s_date_layer, date_buffer);
 }
